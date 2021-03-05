@@ -68,11 +68,14 @@ students_short = students[['score', 'age', 'higher', 'romantic', 'Medu', 'studyt
 for col in students_short.columns:
     pct_missing = students_short[col].isna().mean()
     print(f'{col} - {pct_missing :.1%}')
-
+'''
 score_qunt_25 = students.score.quantile(q=0.25,  interpolation='linear')
 score_qunt_75 = students.score.quantile(q=0.75,  interpolation='linear')
 score_std = np.std(students.score)
 for row in students.score:
     if row < score_qunt_25-score_std*1.5 or row > score_qunt_75+score_std*1.5:
         print(row)
+'''
+print(students.groupby(['romantic', 'studytime'])['score'].mean())
+print(students.groupby(['address', 'internet'])['score'].mean())
 

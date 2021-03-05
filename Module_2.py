@@ -49,15 +49,15 @@ print(students.schoolsup.value_counts())
 
 # описание аналитик Medu & Fedu содержит категорию  0-нет. Делаем предположение, что в 21-ом века начальное образование
 # есть у всех то наблюдения должны принимать значения от 1до 4. Помиотрим сколько таких запмсей.
-print('Образование матери:\n',students.Medu.value_counts())
-print('Образование отца:\n',students.Fedu.value_counts())
+#print('Образование матери:\n',students.Medu.value_counts())
+#print('Образование отца:\n',students.Fedu.value_counts())
 
 # значений 0 не так много, но попробуем их заменить. Оценим как это раполагается в группах мать-отец
-print(students.pivot_table(index=['Medu'], columns=['Fedu'], values=['school'], aggfunc='count'))
+#print(students.pivot_table(index=['Medu'], columns=['Fedu'], values=['school'], aggfunc='count'))
 
 students['Medu'] = students.apply(lambda row: row['Fedu'] if row['Medu'] == 0 or pd.isnull(row['Medu']) else row['Medu'], axis=1)
 students['Fedu'] = students.apply(lambda row: row['Medu'] if row['Fedu'] == 0 or pd.isnull(row['Fedu']) else row['Fedu'], axis=1)
-print(students.pivot_table(index=['Medu'], columns=['Fedu'], values=['school'], aggfunc='count'))
+#print(students.pivot_table(index=['Medu'], columns=['Fedu'], values=['school'], aggfunc='count'))
 
 # тепловая карта показывает, что наибольшую корреляцию score показывает со следующими категориями:
 # age, higher, romantic, Medu, studityme, failures, goout, address Выделим их в отдельный датасет и опять построим heatmap
@@ -69,4 +69,10 @@ for col in students_short.columns:
     pct_missing = students_short[col].isna().mean()
     print(f'{col} - {pct_missing :.1%}')
 
+score_qunt_25 = students.score.quantile(q=0.25,  interpolation='linear')
+score_qunt_75 = students.score.quantile(q=0.75,  interpolation='linear')
+score_std = np.std(students.score)
+for row in students.score:
+    if row < score_qunt_25-score_std*1.5 or row > score_qunt_75+score_std*1.5:
+        print(row)
 

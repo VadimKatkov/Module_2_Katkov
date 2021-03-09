@@ -79,3 +79,5 @@ for row in students.score:
 print(students.groupby(['romantic', 'studytime'])['score'].mean())
 print(students.groupby(['address', 'internet'])['score'].mean())
 
+print(students.shape)
+
